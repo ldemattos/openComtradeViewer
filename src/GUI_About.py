@@ -26,7 +26,8 @@ def aboutWin():
 	
 	# create about window
 	about = tkinter.Toplevel()
-	about.rowconfigure(0,weight=1)
+	for i in xrange(0,10):
+		about.rowconfigure(i,weight=1)
 	about.columnconfigure(0,weight=1)
 	
 	# about window title
