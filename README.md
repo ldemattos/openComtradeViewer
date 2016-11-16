@@ -1,5 +1,5 @@
 # openComtradeViewer
-A open/free multi platform IEEE COMTRADE oscillograph records visualizer.
+An open/free multi platform IEEE COMTRADE oscillograph records visualizer.
 
 It's been successfully tested in GNU/Linux, Microsoft Windows 7 and Mac OS X.
 
