@@ -162,6 +162,7 @@ class mainWindow():
 		if len(analog_curves) > 0:
 			pylab.figure()		
 			for i in analog_curves:
+				i = int(i)
 				label="%s (%s)"%(self.comtradeObj.Ach_id[i],self.comtradeObj.getAnalogUnit(i+1))
 				pylab.plot(self.comtradeObj.getTime(),self.comtradeObj.getAnalogChannelData(i+1),label=label)
 		
@@ -170,6 +171,7 @@ class mainWindow():
 		if len(digital_curves) > 0:
 			pylab.figure()
 			for i in digital_curves:			
+				i = int(i)
 				pylab.plot(self.comtradeObj.getTime(),self.comtradeObj.getDigitalChannelData(i+1))
 		
 		# show all plots
