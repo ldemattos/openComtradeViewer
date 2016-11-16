@@ -1,14 +1,13 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  mainGUI.py
+#  GUI.py
 #  
-#  Copyright 2016 Leonardo M. N. de Mattos <leonardo@mattos.eng.br>
+#  Copyright 2016 Leonardo M. N. de Mattos <l@mattos.eng.br>
 #  
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 2 of the License, or
-#  (at your option) any later version.
+#  the Free Software Foundation; version 3 of the License.
 #  
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -20,14 +19,12 @@
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 #  
-#  
 
 import Tkinter as tkinter
 import os
 import tkFileDialog
 import sys
-sys.path.insert(0, '/home/leonardo/projects/pycomtrade/src/')
-import pyComtrade
+import src.pyComtrade as pyComtrade
 import pylab
 
 class mainWindow():
@@ -72,9 +69,9 @@ class mainWindow():
 		
 		# listbox widget method
 		self.lbl_analog = tkinter.Label(window, text="Analog Channels:")
-		self.lbox_analog = tkinter.Listbox(window,selectmode='multiple')
+		self.lbox_analog = tkinter.Listbox(window,selectmode='extended')
 		self.lbl_digital = tkinter.Label(window, text="Digital Channels:")
-		self.lbox_digital = tkinter.Listbox(window,selectmode='multiple')
+		self.lbox_digital = tkinter.Listbox(window,selectmode='extended')
 	
 		# button to plot the selected graphics
 		self.btn_runPlot = tkinter.Button(window, text="Plot!",command=lambda: self.runPlot())
@@ -104,7 +101,6 @@ class mainWindow():
 		
 		self.filemenu = tkinter.Menu(self.menubar, tearoff=0)
 		self.filemenu.add_command(label="Select COMTRADE file...", command=self.fileSelection)
-		#~ filemenu.add_command(label="Run parser...", command=lambda: runParser(comtradeFile))
 		self.filemenu.add_command(label="Exit", command=window.quit)
 		self.menubar.add_cascade(label="File", menu=self.filemenu)
 		

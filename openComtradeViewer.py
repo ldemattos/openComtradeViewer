@@ -4,12 +4,10 @@
 #  openComtradeViewer.py
 #  
 #  Copyright 2016 Leonardo M. N. de Mattos <l@mattos.eng.br>
-#                 Aniela M. P. Mendes <anielampm@protonmail.ch>
 #  
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
-#  the Free Software Foundation; either version 3 of the License, or
-#  (at your option) any later version.
+#  the Free Software Foundation; version 3 of the License.
 #  
 #  This program is distributed in the hope that it will be useful,
 #  but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -23,13 +21,7 @@
 #  
 
 import Tkinter as tkinter
-
-# my libraries
-
-import src.fileHandling
-import src.mainGUI
-
-
+import src.GUI
 
 def main():
 	
@@ -38,13 +30,10 @@ def main():
 	
 	# Generate main window
 	rootwin = tkinter.Tk()
-	src.mainGUI.mainWindow(rootwin)
+	src.GUI.mainWindow(rootwin)
 	rootwin.mainloop()
 	
-	# Build main Window
-	#~ src.mainGUI.buildGUI()
-	
-	return 0
+	return(0)
 
 if __name__ == '__main__':
 	main()
