@@ -25,7 +25,11 @@ def OscilloInfo(comtradeObj):
 	import tkMessageBox
 
 	if comtradeObj != None:
-		infoText = 'Substation: %s\nRecorder: %s\nSystem frequency: %i Hz\nTotal samples: %i\nSamples per cycle: %i'%\
+		infoText = ("Substation: %s\n"+
+		"Recorder: %s\n"+
+		"System frequency: %i Hz\n"+
+		"Total samples: %i\n"+
+		"Samples per cycle: %i\n")%\
 		(comtradeObj.station_name,\
 		comtradeObj.rec_dev_id,\
 		comtradeObj.lf,\
