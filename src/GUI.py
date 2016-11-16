@@ -24,8 +24,9 @@ import Tkinter as tkinter
 import os
 import tkFileDialog
 import sys
-import src.pyComtrade as pyComtrade
 import pylab
+import src.pyComtrade as pyComtrade
+import src.GUI_Data
 
 class mainWindow():
 	
@@ -33,7 +34,7 @@ class mainWindow():
 	
 		# Class variables
 		self.comtradeFile = "none.txt"
-		self.comtradeObj = pyComtrade.ComtradeRecord
+		self.comtradeObj = None
 	
 		# Adjust rows and columns weights
 		window.rowconfigure(0,weight=1)
@@ -99,11 +100,18 @@ class mainWindow():
 		# Create menu bar
 		self.menubar = tkinter.Menu(window)
 		
+		# File Menu
 		self.filemenu = tkinter.Menu(self.menubar, tearoff=0)
 		self.filemenu.add_command(label="Select COMTRADE file...", command=self.fileSelection)
 		self.filemenu.add_command(label="Exit", command=window.quit)
 		self.menubar.add_cascade(label="File", menu=self.filemenu)
 		
+		# Data menu
+		self.datamenu = tkinter.Menu(self.menubar, tearoff=0)
+		self.datamenu.add_command(label="COMTRADE Info", command=lambda: src.GUI_Data.OscilloInfo(self.comtradeObj))
+		self.menubar.add_cascade(label="Data", menu=self.datamenu)
+		
+		# Help menu
 		self.helpmenu = tkinter.Menu(self.menubar, tearoff=0)
 		self.helpmenu.add_command(label="Project page", command=lambda: webbrowser.open(url,new=2))
 		self.helpmenu.add_command(label="About", command=lambda: aboutWin())
