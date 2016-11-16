@@ -172,7 +172,8 @@ class mainWindow():
 			pylab.figure()
 			for i in digital_curves:			
 				i = int(i)
-				pylab.plot(self.comtradeObj.getTime(),self.comtradeObj.getDigitalChannelData(i+1))
+				label="%s"%(self.comtradeObj.Dch_id[i])
+				pylab.plot(self.comtradeObj.getTime(),self.comtradeObj.getDigitalChannelData(i+1),label=label)
 		
 		# show all plots
 		if len(digital_curves) > 0 or len(analog_curves) > 0:
