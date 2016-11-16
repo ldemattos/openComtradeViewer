@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  GUI.py
+#  mainGUI.py
 #  
 #  Copyright 2016 Leonardo M. N. de Mattos <leonardo@mattos.eng.br>
 #  
@@ -24,231 +24,160 @@
 
 import Tkinter as tkinter
 import os
+import tkFileDialog
+import sys
+sys.path.insert(0, '/home/leonardo/projects/pycomtrade/src/')
+import pyComtrade
+import pylab
 
-class Window:
+class mainWindow():
 	
-	def __init__ (self,toplevel):
-		
-		toplevel.rowconfigure(0,weight=1)
-		toplevel.rowconfigure(1,weight=1)
-		toplevel.columnconfigure(0,weight=1)
-		toplevel.columnconfigure(1,weight=1)
+	def __init__(self,window):
+	
+		# Class variables
+		self.comtradeFile = "none.txt"
+		self.comtradeObj = pyComtrade.ComtradeRecord
+	
+		# Adjust rows and columns weights
+		window.rowconfigure(0,weight=1)
+		window.rowconfigure(1,weight=4)
+		window.rowconfigure(2,weight=0)
+		window.rowconfigure(3,weight=0)
+		window.columnconfigure(0,weight=1)
+		window.columnconfigure(1,weight=1)
 		
 		# Window title
-		toplevel.title("openComtradeViewer")
+		window.title("openComtradeViewer")
 		
 		# Window dimensions and position
 		w = 434
-		h = 434
-		toplevel.resizable(width='false', height='false')
-		width = toplevel.winfo_screenwidth()
-		height = toplevel.winfo_screenheight()
+		h = 300
+		window.resizable(width='false', height='false')
+		width = window.winfo_screenwidth()
+		height = window.winfo_screenheight()
 		posx = (width - w)/2.0
 		posy = (height - h)/2.0
-		toplevel.geometry('%dx%d+%d+%d' % (w, h, posx, posy))
+		window.geometry('%dx%d+%d+%d' % (w, h, posx, posy))
 		
 		# Set window icon
 		if os.name == "nt":
-			toplevel.wm_iconbitmap(default='.\icons\Statistics.ico')
+			#~ window.wm_iconbitmap(default='.\icons\Statistics.ico')
+			pass
 		else:
 			#~ Here will be placed the options for Linux/Mac OS X
 			pass
 		
-		# select file to be parsed (label)
-		lbl_select = tkinter.Label(self, text="Select lis-file:")
+		# Create Menubar
+		self.setMenuBar(window)
+		
+		# listbox widget method
+		self.lbl_analog = tkinter.Label(window, text="Analog Channels:")
+		self.lbox_analog = tkinter.Listbox(window,selectmode='multiple')
+		self.lbl_digital = tkinter.Label(window, text="Digital Channels:")
+		self.lbox_digital = tkinter.Listbox(window,selectmode='multiple')
 	
-		# Button to call file dialog selection
-		# file selection
-		def fileSelection():		
-			lisFile = tkFileDialog.askopenfilename(title="Select lis-file:")
-			
-			if len(lisFile) != 0:		
-			
-				# Update parse button command
-				btn_runParser.configure(command=lambda: runParser(lisFile))
-				
-				# Update lbl_LisFile
-				lbl_lisFile.configure(text=os.path.basename(lisFile))		
-				
-			else: 
-				
-				# Update lis-file
-				lisFile = "none.txt"
-				
-				# Update parse button command
-				btn_runParser.configure(command=lambda: runParser(lisFile))
-				
-				# Update lbl_LisFile
-				lbl_lisFile.configure(text="No file selected")
-				
-			
-		btn_fileSelection = tkinter.Button(toplevel, text="Open", command=fileSelection)
+		# button to plot the selected graphics
+		self.btn_runPlot = tkinter.Button(window, text="Plot!",command=lambda: self.runPlot())
 		
-		# Label to show the selected file name
-		lbl_lisFile = tkinter.Label(toplevel, text="No file selected")
-		
-		# Button to run parser
-		def runParser(lisFile):	
-			
-			if lisFile != "none.txt" and len(lisFile) != 0:
-			
-				[runStatus,outputFiles] = lis_stat_parser(["parseATPStats.py",lisFile],1)
-				
-				if runStatus == 0:
-					
-					infoText = "Everything seems to went OK! :)\n\nThe output files are saved on directory %s"\
-					%(os.path.dirname(lisFile))
-	
-					tkMessageBox.showinfo("Parsing finished", infoText)
-					
-				elif runStatus == 1:
-					tkMessageBox.showerror("Parsing finished", "Ooops!\nUnable to open the given lis-file :/")
-				elif runStatus == 2:
-					tkMessageBox.showerror("Parsing finished", "Ooops!\nThis is not a proper lis-file :/")
-				else:
-					tkMessageBox.showerror("Parsing finished", "Ooops!\nSomething unexpected happened :/")
-					
-			else:
-				properMsg = "Select a proper lis-file clicking in Open button..."
-				print properMsg
-				tkMessageBox.showwarning("parseATPStats", "No file selected!\n"+properMsg)
-			
-		btn_runParser = tkinter.Button(toplevel, text="Parse it!",command=lambda: runParser(lisFile))
-		
-		# Create menu bar
-		menubar = tkinter.Menu(toplevel)
-		
-		filemenu = tkinter.Menu(menubar, tearoff=0)
-		filemenu.add_command(label="Select lis-file...", command=fileSelection)
-		#~ filemenu.add_command(label="Run parser...", command=lambda: runParser(lisFile))
-		filemenu.add_command(label="Exit", command=toplevel.quit)
-		menubar.add_cascade(label="File", menu=filemenu)
-		
-		helpmenu = tkinter.Menu(menubar, tearoff=0)
-		helpmenu.add_command(label="Project page", command=lambda: webbrowser.open(url,new=2))
-		helpmenu.add_command(label="About", command=lambda: aboutWin())
-		menubar.add_cascade(label="Help", menu=helpmenu)
-			
-		toplevel.config(menu=menubar)
+		# status bar
+		self.lbl_status = tkinter.Label(window, text="No COMTRADE (*.cfg) file selected", bd=1, relief='sunken')
 		
 		# Add the widgets to the window screen
-		lbl_select.grid(sticky='w',row=0,column=0)
-		btn_fileSelection.grid(sticky='w',row=1,column=0)
-		lbl_lisFile.grid(sticky='w',row=1,column=1)
-		btn_runParser.grid(sticky='nsew',row=2,column=0,columnspan=2)
+		self.lbl_analog.grid(stick='w',row=0,column=0)
+		self.lbl_digital.grid(stick='w',row=0,column=1)
+		self.lbox_analog.grid(stick='nsew',row=1,column=0)
+		self.lbox_digital.grid(stick='nsew',row=1,column=1)
+		self.btn_runPlot.grid(sticky='nsew',row=2,column=0,columnspan=2)
+		self.lbl_status.grid(sticky='nsew',row=3,column=0,columnspan=2)
 		
-def buildGUI():
-	
-	# create a new window
-	window = tkinter.Tk()
-	
-	window.rowconfigure(0,weight=1)
-	window.rowconfigure(1,weight=1)
-	window.columnconfigure(0,weight=1)
-	window.columnconfigure(1,weight=1)
-	
-	# Window title
-	window.title("openComtradeViewer")
-	
-	# Window dimensions and position
-	w = 434
-	h = 434
-	window.resizable(width='false', height='false')
-	width = window.winfo_screenwidth()
-	height = window.winfo_screenheight()
-	posx = (width - w)/2.0
-	posy = (height - h)/2.0
-	window.geometry('%dx%d+%d+%d' % (w, h, posx, posy))
-	
-	# Set window icon
-	if os.name == "nt":
-		window.wm_iconbitmap(default='.\icons\Statistics.ico')
-	else:
-		#~ Here will be placed the options for Linux/Mac OS X
-		pass
-	
-	# select file to be parsed (label)
-	lbl_select = tkinter.Label(window, text="Select lis-file:")
-
-	# Button to call file dialog selection
-	# file selection
-	def fileSelection():		
-		lisFile = tkFileDialog.askopenfilename(title="Select lis-file:")
+	# Set and configure the menubar
+	def setMenuBar(self,window):
 		
-		if len(lisFile) != 0:		
+		from GUI_About import aboutWin
+		import webbrowser
 		
-			# Update parse button command
-			btn_runParser.configure(command=lambda: runParser(lisFile))
+		# Variables
+		url = "http://github.com/ldemattos/openComtradeViewer"
+		
+		# Create menu bar
+		self.menubar = tkinter.Menu(window)
+		
+		self.filemenu = tkinter.Menu(self.menubar, tearoff=0)
+		self.filemenu.add_command(label="Select COMTRADE file...", command=self.fileSelection)
+		#~ filemenu.add_command(label="Run parser...", command=lambda: runParser(comtradeFile))
+		self.filemenu.add_command(label="Exit", command=window.quit)
+		self.menubar.add_cascade(label="File", menu=self.filemenu)
+		
+		self.helpmenu = tkinter.Menu(self.menubar, tearoff=0)
+		self.helpmenu.add_command(label="Project page", command=lambda: webbrowser.open(url,new=2))
+		self.helpmenu.add_command(label="About", command=lambda: aboutWin())
+		self.menubar.add_cascade(label="Help", menu=self.helpmenu)
 			
-			# Update lbl_LisFile
-			lbl_lisFile.configure(text=os.path.basename(lisFile))		
+		window.config(menu=self.menubar)
+	
+	# file selection method
+	def fileSelection(self):
+				
+		self.comtradeFile = tkFileDialog.askopenfilename(title="Select COMTRADE file:")
+		
+		if len(self.comtradeFile) != 0:		
+			
+			# Update lbl_comtradeFile
+			self.lbl_status.configure(text=os.path.basename(self.comtradeFile))
+			
+			# clean listboxes data
+			self.lbox_analog.delete(0,'end')
+			self.lbox_digital.delete(0,'end')
+			
+			# Update listboxes
+			self.readChannels()		
 			
 		else: 
 			
 			# Update lis-file
-			lisFile = "none.txt"
+			self.comtradeFile = "none.txt"
 			
-			# Update parse button command
-			btn_runParser.configure(command=lambda: runParser(lisFile))
+			# clean listboxes data
+			self.lbox_analog.delete(0,'end')
+			self.lbox_digital.delete(0,'end')
 			
 			# Update lbl_LisFile
-			lbl_lisFile.configure(text="No file selected")
+			self.lbl_status.configure(text="No COMTRADE (*.cfg) file selected")
 			
+	# method to setup the listbox with the given file
+	def readChannels(self):
 		
-	btn_fileSelection = tkinter.Button(window, text="Open", command=fileSelection)
-	
-	# Label to show the selected file name
-	lbl_lisFile = tkinter.Label(window, text="No file selected")
-	
-	# Button to run parser
-	def runParser(lisFile):	
+		self.comtradeObj = pyComtrade.ComtradeRecord(self.comtradeFile)
+		self.comtradeObj.ReadDataFile()
 		
-		if lisFile != "none.txt" and len(lisFile) != 0:
+		# Update analog channels list
+		for i in xrange(0,self.comtradeObj.A):
+			self.lbox_analog.insert('end',self.comtradeObj.Ach_id[i])
 		
-			[runStatus,outputFiles] = lis_stat_parser(["parseATPStats.py",lisFile],1)
-			
-			if runStatus == 0:
-				
-				infoText = "Everything seems to went OK! :)\n\nThe output files are saved on directory %s"\
-				%(os.path.dirname(lisFile))
-
-				tkMessageBox.showinfo("Parsing finished", infoText)
-				
-			elif runStatus == 1:
-				tkMessageBox.showerror("Parsing finished", "Ooops!\nUnable to open the given lis-file :/")
-			elif runStatus == 2:
-				tkMessageBox.showerror("Parsing finished", "Ooops!\nThis is not a proper lis-file :/")
-			else:
-				tkMessageBox.showerror("Parsing finished", "Ooops!\nSomething unexpected happened :/")
-				
-		else:
-			properMsg = "Select a proper lis-file clicking in Open button..."
-			print properMsg
-			tkMessageBox.showwarning("parseATPStats", "No file selected!\n"+properMsg)
+		# Update digital channels list
+		for i in xrange(0,self.comtradeObj.D):
+			self.lbox_digital.insert('end',self.comtradeObj.Dch_id[i])	
+	
+	# Method for plotting data
+	def runPlot(self):
 		
-	btn_runParser = tkinter.Button(window, text="Parse it!",command=lambda: runParser(lisFile))
-	
-	# Create menu bar
-	menubar = tkinter.Menu(window)
-	
-	filemenu = tkinter.Menu(menubar, tearoff=0)
-	filemenu.add_command(label="Select lis-file...", command=fileSelection)
-	#~ filemenu.add_command(label="Run parser...", command=lambda: runParser(lisFile))
-	filemenu.add_command(label="Exit", command=window.quit)
-	menubar.add_cascade(label="File", menu=filemenu)
-	
-	helpmenu = tkinter.Menu(menubar, tearoff=0)
-	helpmenu.add_command(label="Project page", command=lambda: webbrowser.open(url,new=2))
-	helpmenu.add_command(label="About", command=lambda: aboutWin())
-	menubar.add_cascade(label="Help", menu=helpmenu)
+		# plot analog selected data
+		analog_curves = self.lbox_analog.curselection()
+		if len(analog_curves) > 0:
+			pylab.figure()		
+			for i in analog_curves:
+				label="%s (%s)"%(self.comtradeObj.Ach_id[i],self.comtradeObj.getAnalogUnit(i+1))
+				pylab.plot(self.comtradeObj.getTime(),self.comtradeObj.getAnalogChannelData(i+1),label=label)
 		
-	window.config(menu=menubar)
+		# plot analog selected data
+		digital_curves = self.lbox_digital.curselection()
+		if len(digital_curves) > 0:
+			pylab.figure()
+			for i in digital_curves:			
+				pylab.plot(self.comtradeObj.getTime(),self.comtradeObj.getDigitalChannelData(i+1))
+		
+		# show all plots
+		if len(digital_curves) > 0 or len(analog_curves) > 0:
+			pylab.legend()
+			pylab.show()	
 	
-	# Add the widgets to the window screen
-	lbl_select.grid(sticky='w',row=0,column=0)
-	btn_fileSelection.grid(sticky='w',row=1,column=0)
-	lbl_lisFile.grid(sticky='w',row=1,column=1)
-	btn_runParser.grid(sticky='nsew',row=2,column=0,columnspan=2)
-	
-	# draw the window and start the 'app'
-	window.mainloop()
