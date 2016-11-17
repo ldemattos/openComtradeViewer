@@ -119,6 +119,8 @@ class mainWindow():
 		# Data menu
 		self.datamenu = tkinter.Menu(self.menubar, tearoff=0)
 		self.datamenu.add_command(label="COMTRADE Info", command=lambda: src.GUI_Data.OscilloInfo(self.comtradeObj))
+		self.datamenu.add_command(label="Export selected data",\
+		 command=lambda: src.GUI_Data.exportData(self.comtradeObj,self.lbox_analog.curselection(),self.lbox_digital.curselection()))
 		self.menubar.add_cascade(label="Data", menu=self.datamenu)
 		
 		# Help menu
@@ -137,7 +139,6 @@ class mainWindow():
 		options['defaultextension'] = '.cfg'
 		options['filetypes'] = [('COMTRADE Files', '.cfg'),('All Files', '.*')]
 		options['title'] = 'Select COMTRADE file:'
-		
 		self.comtradeFile = tkFileDialog.askopenfilename(**options)
 		
 		if len(self.comtradeFile) != 0:		
