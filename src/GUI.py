@@ -113,8 +113,14 @@ class mainWindow():
 	
 	# file selection method
 	def fileSelection(self):
-				
-		self.comtradeFile = tkFileDialog.askopenfilename(title="Select COMTRADE file:")
+		
+		# Options for file dialog
+		options = {}
+		options['defaultextension'] = '.cfg'
+		options['filetypes'] = [('COMTRADE Files', '.cfg'),('All Files', '.*')]
+		options['title'] = 'Select COMTRADE file:'
+		
+		self.comtradeFile = tkFileDialog.askopenfilename(**options)
 		
 		if len(self.comtradeFile) != 0:		
 			
