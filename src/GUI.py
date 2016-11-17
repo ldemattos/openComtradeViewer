@@ -36,13 +36,15 @@ class mainWindow():
 		self.comtradeFile = "none.txt"
 		self.comtradeObj = None
 	
-		# Adjust rows and columns weights
+		# Adjust rows and columns weights		
 		window.rowconfigure(0,weight=1)
 		window.rowconfigure(1,weight=4)
 		window.rowconfigure(2,weight=0)
 		window.rowconfigure(3,weight=0)
 		window.columnconfigure(0,weight=1)
-		window.columnconfigure(1,weight=1)
+		window.columnconfigure(1,weight=0)
+		window.columnconfigure(2,weight=1)
+		window.columnconfigure(3,weight=0)
 		
 		# Window title
 		window.title("openComtradeViewer")
@@ -70,9 +72,15 @@ class mainWindow():
 		
 		# listbox widget method
 		self.lbl_analog = tkinter.Label(window, text="Analog Channels:")
-		self.lbox_analog = tkinter.Listbox(window,selectmode='extended')
-		self.lbl_digital = tkinter.Label(window, text="Digital Channels:")
-		self.lbox_digital = tkinter.Listbox(window,selectmode='extended')
+		self.scroll_analog = tkinter.Scrollbar(window,orient='vertical')
+		self.lbox_analog = tkinter.Listbox(window,\
+		selectmode='extended',yscrollcommand=self.scroll_analog.set)
+		self.scroll_analog.config(command=self.lbox_analog.yview)
+		self.lbl_digital = tkinter.Label(window,text="Digital Channels:")
+		self.scroll_digital = tkinter.Scrollbar(window,orient='vertical')
+		self.lbox_digital = tkinter.Listbox(window,\
+		selectmode='extended',yscrollcommand=self.scroll_digital.set)
+		self.scroll_digital.config(command=self.lbox_digital.yview)
 	
 		# button to plot the selected graphics
 		self.btn_runPlot = tkinter.Button(window, text="Plot!",command=lambda: self.runPlot())
@@ -82,11 +90,13 @@ class mainWindow():
 		
 		# Add the widgets to the window screen
 		self.lbl_analog.grid(stick='w',row=0,column=0)
-		self.lbl_digital.grid(stick='w',row=0,column=1)
 		self.lbox_analog.grid(stick='nsew',row=1,column=0)
-		self.lbox_digital.grid(stick='nsew',row=1,column=1)
-		self.btn_runPlot.grid(sticky='nsew',row=2,column=0,columnspan=2)
-		self.lbl_status.grid(sticky='nsew',row=3,column=0,columnspan=2)
+		self.scroll_analog.grid(stick='nsw',row=1,column=1)
+		self.lbl_digital.grid(stick='w',row=0,column=2)
+		self.lbox_digital.grid(stick='nsew',row=1,column=2)
+		self.scroll_digital.grid(stick='nsw',row=1,column=3)
+		self.btn_runPlot.grid(sticky='nsew',row=2,column=0,columnspan=4)
+		self.lbl_status.grid(sticky='nsew',row=3,column=0,columnspan=4)
 		
 	# Set and configure the menubar
 	def setMenuBar(self,window):
