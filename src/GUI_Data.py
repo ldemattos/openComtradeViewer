@@ -110,9 +110,13 @@ def exportData(comtradeObj,analog_curves,digital_curves):
 					fp_dataFile.write(" %f"%(data[i,j]))
 				
 				fp_dataFile.write("\n")
+		
+		# Show message
+		msg = "Success!\nSelected data saved in %s"%(dataFile)
+		tkMessageBox.showinfo("Export selected data",msg)
 			
 		# close data file
 		fp_dataFile.close
 		
 	elif(len(dataFile)) != 0:
-		tkMessageBox.showerror("Export selected data failed","No analog or digital data selected!")
+		tkMessageBox.showerror("Export selected data","Fail! No analog or digital data selected!")
