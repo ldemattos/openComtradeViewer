@@ -173,11 +173,11 @@ class mainWindow():
 		
 		# Update analog channels list
 		for i in xrange(0,self.comtradeObj.A):
-			self.lbox_analog.insert('end',self.comtradeObj.Ach_id[i])
+			self.lbox_analog.insert('end',"(#%i) "%(i+1)+self.comtradeObj.Ach_id[i])
 		
 		# Update digital channels list
 		for i in xrange(0,self.comtradeObj.D):
-			self.lbox_digital.insert('end',self.comtradeObj.Dch_id[i])	
+			self.lbox_digital.insert('end',"(#%i) "%(i+1)+self.comtradeObj.Dch_id[i])
 	
 	# Method for plotting data
 	def runPlot(self):
