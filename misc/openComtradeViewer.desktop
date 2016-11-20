@@ -1,0 +1,10 @@
+[Desktop Entry]
+#Version=x.y
+Name=openComtradeViewer
+Comment=An open/free multi platform IEEE COMTRADE oscillograph records visualizer
+Exec=/home/leonardo/projects/openComtradeViewer/openComtradeViewer.py
+#Icon=/home/alex/Pictures/icon.png
+Terminal=false
+Type=Application
+Categories=Utility;Application;
+MimeType=application/cfg;text/plain;text/cfg;
