@@ -85,7 +85,6 @@ class mainWindow():
 		# button to plot the selected graphics
 		self.btn_runPlot = tkinter.Button(window, text="Plot!",command=lambda: self.runPlot())
 		
-		
 		# status bar
 		self.lbl_status = tkinter.Label(window, text="No COMTRADE (*.cfg) file selected", bd=1, relief='sunken')
 		
