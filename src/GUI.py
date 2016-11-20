@@ -30,10 +30,10 @@ import src.GUI_Data
 
 class mainWindow():
 	
-	def __init__(self,window):
+	def __init__(self,window,comtradeFile):
 	
 		# Class variables
-		self.comtradeFile = "none.txt"
+		self.comtradeFile = comtradeFile
 		self.comtradeObj = None
 	
 		# Adjust rows and columns weights		
@@ -85,8 +85,12 @@ class mainWindow():
 		# button to plot the selected graphics
 		self.btn_runPlot = tkinter.Button(window, text="Plot!",command=lambda: self.runPlot())
 		
+		
 		# status bar
 		self.lbl_status = tkinter.Label(window, text="No COMTRADE (*.cfg) file selected", bd=1, relief='sunken')
+		
+		# Check if some file was given in the startup and update the widgets
+		self.checkComtradeStartup()
 		
 		# Add the widgets to the window screen
 		self.lbl_analog.grid(stick='w',row=0,column=0)
@@ -156,7 +160,7 @@ class mainWindow():
 		else: 
 			
 			# Update lis-file
-			self.comtradeFile = "none.txt"
+			self.comtradeFile = None
 			
 			# clean listboxes data
 			self.lbox_analog.delete(0,'end')
@@ -204,4 +208,14 @@ class mainWindow():
 		if len(digital_curves) > 0 or len(analog_curves) > 0:
 			pylab.legend()
 			pylab.show()	
+	
+	# Check if some file was given in the startup
+	def checkComtradeStartup(self):
+		
+		if self.comtradeFile != None:		
+			# Update lbl_comtradeFile
+			self.lbl_status.configure(text=os.path.basename(self.comtradeFile))
+			
+			# Update listboxes
+			self.readChannels()		
 	

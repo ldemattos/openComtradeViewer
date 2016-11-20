@@ -22,15 +22,19 @@
 
 import Tkinter as tkinter
 import src.GUI
+import sys
 
 def main():
 	
-	# Variables
-	lisFile = "none.txt"
-	
+	# Check input file from stdin
+	if len(sys.argv) == 2:	
+		comtradeFile = sys.argv[1]
+	else:
+		comtradeFile = None
+
 	# Generate main window
 	rootwin = tkinter.Tk()
-	src.GUI.mainWindow(rootwin)
+	src.GUI.mainWindow(rootwin,comtradeFile)
 	rootwin.mainloop()
 	
 	return(0)
