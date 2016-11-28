@@ -50,6 +50,7 @@ def runPlot(analog_curves,digital_curves,comtradeObj):
 				label="%s"%(comtradeObj.Dch_id[i])
 				ax.plot(comtradeObj.getTime(),comtradeObj.getDigitalChannelData(i+1),label=label)
 		
+		# Show the plot image
 		plt.show()	
 
 	return(None)
