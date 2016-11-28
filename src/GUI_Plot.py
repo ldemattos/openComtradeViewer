@@ -34,7 +34,6 @@ def runPlot(analog_curves,digital_curves,comtradeObj):
 		ax = fig.add_subplot(111, axisbg='#FFFFCC')
 		ax.grid()	
 		cursor = Cursor(ax, useblit=True, color='red', linewidth=1)	
-		plt.legend()
 	
 		# plot analog selected data
 		if len(analog_curves) > 0:
@@ -51,6 +50,7 @@ def runPlot(analog_curves,digital_curves,comtradeObj):
 				ax.plot(comtradeObj.getTime(),comtradeObj.getDigitalChannelData(i+1),label=label)
 		
 		# Show the plot image
+		ax.legend()
 		plt.show()	
 
 	return(None)
