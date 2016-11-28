@@ -24,9 +24,9 @@ import Tkinter as tkinter
 import os
 import tkFileDialog
 import sys
-import pylab
 import src.pyComtrade as pyComtrade
 import src.GUI_Data
+import src.GUI_Plot
 
 class mainWindow():
 	
@@ -83,7 +83,8 @@ class mainWindow():
 		self.scroll_digital.config(command=self.lbox_digital.yview)
 	
 		# button to plot the selected graphics
-		self.btn_runPlot = tkinter.Button(window, text="Plot!",command=lambda: self.runPlot())
+		self.btn_runPlot = tkinter.Button(window, text="Plot!",\
+		command=lambda: src.GUI_Plot.runPlot(self.lbox_analog.curselection(),self.lbox_digital.curselection(),self.comtradeObj))
 		
 		# status bar
 		self.lbl_status = tkinter.Label(window, text="No COMTRADE (*.cfg) file selected", bd=1, relief='sunken')
@@ -181,32 +182,6 @@ class mainWindow():
 		# Update digital channels list
 		for i in xrange(0,self.comtradeObj.D):
 			self.lbox_digital.insert('end',"(#%i) "%(i+1)+self.comtradeObj.Dch_id[i])
-	
-	# Method for plotting data
-	def runPlot(self):
-		
-		# plot analog selected data
-		analog_curves = self.lbox_analog.curselection()
-		if len(analog_curves) > 0:
-			pylab.figure()		
-			for i in analog_curves:
-				i = int(i)
-				label="%s (%s)"%(self.comtradeObj.Ach_id[i],self.comtradeObj.getAnalogUnit(i+1))
-				pylab.plot(self.comtradeObj.getTime(),self.comtradeObj.getAnalogChannelData(i+1),label=label)
-		
-		# plot analog selected data
-		digital_curves = self.lbox_digital.curselection()
-		if len(digital_curves) > 0:
-			pylab.figure()
-			for i in digital_curves:			
-				i = int(i)
-				label="%s"%(self.comtradeObj.Dch_id[i])
-				pylab.plot(self.comtradeObj.getTime(),self.comtradeObj.getDigitalChannelData(i+1),label=label)
-		
-		# show all plots
-		if len(digital_curves) > 0 or len(analog_curves) > 0:
-			pylab.legend()
-			pylab.show()	
 	
 	# Check if some file was given in the startup
 	def checkComtradeStartup(self):

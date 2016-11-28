@@ -20,4 +20,36 @@
 #  MA 02110-1301, USA.
 #  
 
+from matplotlib.widgets import Cursor
+import matplotlib.pyplot as plt
 
+# Method for plotting data
+def runPlot(analog_curves,digital_curves,comtradeObj):
+	
+	# Checking if there are selecte variables
+	if len(digital_curves) > 0 or len(analog_curves) > 0:
+	
+		# Commom stuff
+		fig = plt.figure()
+		ax = fig.add_subplot(111, axisbg='#FFFFCC')
+		ax.grid()	
+		cursor = Cursor(ax, useblit=True, color='red', linewidth=1)	
+		plt.legend()
+	
+		# plot analog selected data
+		if len(analog_curves) > 0:
+			for i in analog_curves:
+				i = int(i)
+				label="%s (%s)"%(comtradeObj.Ach_id[i],comtradeObj.getAnalogUnit(i+1))
+				ax.plot(comtradeObj.getTime(),comtradeObj.getAnalogChannelData(i+1),label=label)
+				
+		# plot digital selected data
+		if len(digital_curves) > 0:
+			for i in digital_curves:			
+				i = int(i)
+				label="%s"%(comtradeObj.Dch_id[i])
+				ax.plot(comtradeObj.getTime(),comtradeObj.getDigitalChannelData(i+1),label=label)
+		
+		plt.show()	
+
+	return(None)
