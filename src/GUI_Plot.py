@@ -33,21 +33,23 @@ def runPlot(analog_curves,digital_curves,comtradeObj):
 		fig = plt.figure()
 		ax = fig.add_subplot(111, axisbg='#FFFFCC')
 		ax.grid()	
-		cursor = Cursor(ax, useblit=True, color='red', linewidth=1)	
+		cursor = Cursor(ax, useblit=True, color='red', linewidth=1)
 	
 		# plot analog selected data
 		if len(analog_curves) > 0:
 			for i in analog_curves:
 				i = int(i)
 				label="%s (%s)"%(comtradeObj.Ach_id[i],comtradeObj.getAnalogUnit(i+1))
-				ax.plot(comtradeObj.getTime(),comtradeObj.getAnalogChannelData(i+1),label=label)
+				ax.plot(comtradeObj.getTime(),comtradeObj.getAnalogChannelData(i+1),\
+				label=label,linewidth=2)
 				
 		# plot digital selected data
 		if len(digital_curves) > 0:
 			for i in digital_curves:			
 				i = int(i)
 				label="%s"%(comtradeObj.Dch_id[i])
-				ax.plot(comtradeObj.getTime(),comtradeObj.getDigitalChannelData(i+1),label=label)
+				ax.plot(comtradeObj.getTime(),comtradeObj.getDigitalChannelData(i+1),\
+				label=label,linewidth=2)
 		
 		# Show the plot image
 		ax.legend()
