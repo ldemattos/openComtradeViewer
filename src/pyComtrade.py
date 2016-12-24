@@ -99,14 +99,7 @@ class ComtradeRecord:
         
         """
         print 'pyComtrade instance created!'
-        self.clear()
-        
-        if os.path.isfile(filename):
-            self.filename = filename
-            self.ReadCFG()
-        else:
-            print "%s File not found." %(filename)
-            return
+        self.clear()        
 
     def clear(self):
         """
