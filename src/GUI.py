@@ -23,6 +23,7 @@
 import Tkinter as tkinter
 import os
 import tkFileDialog
+import tkMessageBox
 import sys
 import pylab
 import src.pyComtrade as pyComtrade
@@ -172,15 +173,31 @@ class mainWindow():
 	def readChannels(self):
 		
 		self.comtradeObj = pyComtrade.ComtradeRecord(self.comtradeFile)
-		self.comtradeObj.ReadDataFile()
+		checkCFG = self.comtradeObj.ReadCFG()
+
+		if checkCFG != 2:
+			# Read data file
+			self.comtradeObj.ReadDataFile()
+			
+			# Update analog channels list
+			for i in xrange(0,self.comtradeObj.A):
+				self.lbox_analog.insert('end',"(#%i) "%(i+1)+self.comtradeObj.Ach_id[i])
+			
+			# Update digital channels list
+			for i in xrange(0,self.comtradeObj.D):
+				self.lbox_digital.insert('end',"(#%i) "%(i+1)+self.comtradeObj.Dch_id[i])
 		
-		# Update analog channels list
-		for i in xrange(0,self.comtradeObj.A):
-			self.lbox_analog.insert('end',"(#%i) "%(i+1)+self.comtradeObj.Ach_id[i])
-		
-		# Update digital channels list
-		for i in xrange(0,self.comtradeObj.D):
-			self.lbox_digital.insert('end',"(#%i) "%(i+1)+self.comtradeObj.Dch_id[i])
+		else:
+			tkMessageBox.showerror("COMTRADE Parsing - Error","Please select a valid COMTRADE cfg file.")
+			# Update lis-file
+			self.comtradeFile = None
+			
+			# clean listboxes data
+			self.lbox_analog.delete(0,'end')
+			self.lbox_digital.delete(0,'end')
+			
+			# Update lbl_LisFile
+			self.lbl_status.configure(text="No COMTRADE (*.cfg) file selected")
 	
 	# Method for plotting data
 	def runPlot(self):
