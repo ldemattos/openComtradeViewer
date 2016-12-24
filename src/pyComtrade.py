@@ -98,7 +98,6 @@ class ComtradeRecord:
         filename: string with the path for the .cfg file.        
         """
         self.filename = filename
-        print self.filename
         print 'pyComtrade instance created!'
 
     def clear(self):
