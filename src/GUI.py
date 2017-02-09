@@ -28,6 +28,7 @@ import sys
 import pylab
 import src.pyComtrade as pyComtrade
 import src.GUI_Data
+import src.GUI_Analyses
 
 class mainWindow():
 	
@@ -127,6 +128,12 @@ class mainWindow():
 		 command=lambda: src.GUI_Data.exportData(self.comtradeObj,self.lbox_analog.curselection(),self.lbox_digital.curselection()))
 		self.menubar.add_cascade(label="Data", menu=self.datamenu)
 		
+		# Analyses menu
+		self.analysesmenu = tkinter.Menu(self.menubar, tearoff=0)
+		self.analysesmenu.add_command(label="Compute RMS...", command=lambda: src.GUI_Analyses.calcRMS(self.comtradeObj,\
+		self.lbox_analog.curselection()))
+		self.menubar.add_cascade(label="Analyses", menu=self.analysesmenu)
+
 		# Help menu
 		self.helpmenu = tkinter.Menu(self.menubar, tearoff=0)
 		self.helpmenu.add_command(label="Project page", command=lambda: webbrowser.open(url,new=2))
