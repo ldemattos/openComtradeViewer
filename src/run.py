@@ -1,9 +1,9 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 #
-#  openComtradeViewer.py
+#  run.py
 #  
-#  Copyright 2016 Leonardo M. N. de Mattos <l@mattos.eng.br>
+#  Copyright 2017 Leonardo M. N. de Mattos <l@mattos.eng.br>
 #  
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
@@ -20,24 +20,6 @@
 #  MA 02110-1301, USA.
 #  
 
-import Tkinter as tkinter
-import src.GUI
-import sys
+import openComtradeViewer
 
-def main():
-	
-	# Check input file from stdin
-	if len(sys.argv) == 2:	
-		comtradeFile = sys.argv[1]
-	else:
-		comtradeFile = None
-
-	# Generate main window
-	rootwin = tkinter.Tk()
-	src.GUI.mainWindow(rootwin,comtradeFile)
-	rootwin.mainloop()
-	
-	return(0)
-
-if __name__ == '__main__':
-	main()
+openComtradeViewer.main()
