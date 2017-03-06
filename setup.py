@@ -45,9 +45,11 @@ setup(name='openComtradeViewer',
 	},
     entry_points = {
 				'console_scripts': [
-					'oCV = openComtradeViewer.run:main',                  
+					'ocv = openComtradeViewer.run:main',
 				],              
 	},
+	include_package_data=True,
+	zip_safe=False
 	#~ data_files=[('README', ['README.md']),
                   #~ ('LICENSE', ['LICENSE'])]
 )
