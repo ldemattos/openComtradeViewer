@@ -39,10 +39,9 @@ setup(name='openComtradeViewer',
 	url='https://github.com/ldemattos/openComtradeViewer',
 	packages=['openComtradeViewer'],
 	package_dir={'openComtradeViewer':'src'},
-	package_data={
-		'README': ['README.md'],
-		'LICENSE': ['LICENSE'],
-	},
+	data_files=[("", ["LICENSE"]),
+				("", ["README.md"])
+				],
     entry_points = {
 				'console_scripts': [
 					'ocv = openComtradeViewer.run:main',
@@ -50,6 +49,4 @@ setup(name='openComtradeViewer',
 	},
 	include_package_data=True,
 	zip_safe=False
-	#~ data_files=[('README', ['README.md']),
-                  #~ ('LICENSE', ['LICENSE'])]
 )
