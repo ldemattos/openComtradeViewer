@@ -15,7 +15,10 @@ pip install https://github.com/ldemattos/openComtradeViewer/archive/master.zip -
 
 ## Usage Guidance
 
-The openComtradeViewer can be simple launched from CLI by the command ocv.
+The openComtradeViewer can be simple launched from CLI by the command:
+``` 
+ocv
+```
 
 ## On Versioning and Packaging
 
