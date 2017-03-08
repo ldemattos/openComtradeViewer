@@ -38,10 +38,9 @@ setup(name='openComtradeViewer',
 	url='https://github.com/ldemattos/openComtradeViewer',
 	packages=['openComtradeViewer'],
 	install_requires=[
-		'Tkinter',
-		'matplotlib',
-		'scipy',
-		'numpy',
+		'matplotlib>=1.5.1',
+		'scipy>=0.18.0',
+		'numpy>=1.11.0',
 	],
 	package_dir={'openComtradeViewer':'src'},
     entry_points = {
